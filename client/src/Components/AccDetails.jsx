@@ -26,7 +26,8 @@ const AccDetails = () => {
     setContract,
     setTransactions,
     account,
-    setAccount,
+    setAccount, 
+    setsactions
   } = useContext(MyContext);
 
   const [first, setFirst] = useState(true);
@@ -57,9 +58,7 @@ const AccDetails = () => {
   };
 
   const switchAccount = async (event) => {
-    if (event) {
-      event.preventDefault();
-    }
+    
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const accountsList = await provider.send("eth_requestAccounts", []);
@@ -73,8 +72,8 @@ const AccDetails = () => {
         const balanceWei = await provider.getBalance(newAccount);
         const balanceInEther = ethers.formatEther(balanceWei);
         setBalance(balanceInEther);
-        setsactions("");
-        setTransactions("");
+        setsactions([]);
+        setTransactions([]);
       } else {
         console.warn("No accounts found.");
       }
@@ -136,91 +135,93 @@ const AccDetails = () => {
 
   return (
 <>
-  <div className="card text-center shadow">
-    <div className="card-header bg-secondary text-white">Account Details</div>
-    <div className="card-body d-flex flex-column flex-sm-row justify-content-center align-items-center">
-      <div className="d-flex justify-content-start align-items-center">
-        <img
-          src={imageFile || img[Math.floor(Math.random() * img.length)]}
-          alt="User Avatar"
-          className="img-fluid rounded-circle ms-1"
-          style={{
-            width: "50px",
-            height: "50px",
-            objectFit: "cover",
-            marginRight: "15px",
-          }}
-        />
-        <div className="text-start me-3">
-          <div className="d-flex align-items-center mb-2">
-            <h5 className="fw-normal fs-5 mb-0">Account:</h5>
-            <p className="fs-5 fw-lighter text-muted ms-2 mb-0">
-              {account &&
-                `${account.substring(0, 5)}xxx...xxx${account.substring(
-                  account.length - 5
-                )}`}
-              <span>
-                {first ? (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lucide lucide-copy"
-                    onClick={copyToClipboard}
-                    style={{ cursor: "pointer", marginLeft: "5px" }}
-                  >
-                    <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-                  </svg>
-                ) : (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lucide lucide-check-circle"
-                    style={{ marginLeft: "5px" }}
-                  >
-                    <path d="M9 11l3 3L22 4" />
-                    <circle cx="12" cy="12" r="10" />
-                  </svg>
-                )}
-              </span>
-            </p>
+  <div className="container-fluid p-3">
+    <div className="card text-center shadow">
+      <div className="card-header bg-secondary text-white">Account Details</div>
+      <div className="card-body">
+        <div className="row align-items-center mx-4">
+          <div className="col-12 col-sm-3 text-center text-sm-start mb-3 mb-sm-0  ">
+            <img
+              src={imageFile || img[Math.floor(Math.random() * img.length)]}
+              alt="User Avatar"
+              className="img-fluid rounded-circle"
+              style={{
+                width: "75px",
+                height: "75px",
+                objectFit: "cover",
+                
+              }}
+            />
           </div>
-          <div className="d-flex align-items-center mb-2">
-            <h5 className="fw-normal fs-5 mb-0">Username:</h5>
-            <p className="fs-5 fw-lighter text-muted ms-2 mb-0">
-              {username || "No username set"}
-            </p>
+          <div className="col-12 col-sm-9 text-start">
+            <div className="d-flex flex-wrap justify-content-center justify-content-sm-start align-items-center mb-2">
+              <h5 className="fw-normal fs-5 mb-0">Account:</h5>
+              <p className="fs-5 fw-lighter text-muted ms-2 mb-0 text-truncate" style={{ maxWidth: "100%" }}>
+                {account &&
+                  `${account.substring(0, 5)}xxx...xxx${account.substring(account.length - 5)}`}
+                <span>
+                  {first ? (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="lucide lucide-copy"
+                      onClick={copyToClipboard}
+                      style={{ cursor: "pointer", marginLeft: "5px" }}
+                    >
+                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+                      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+                    </svg>
+                  ) : (
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="lucide lucide-check-circle"
+                      style={{ marginLeft: "5px" }}
+                    >
+                      <path d="M9 11l3 3L22 4" />
+                      <circle cx="12" cy="12" r="10" />
+                    </svg>
+                  )}
+                </span>
+              </p>
+            </div>
+            <div className="d-flex flex-wrap justify-content-center justify-content-sm-start align-items-center mb-2">
+              <h5 className="fw-normal fs-5 mb-0">Username:</h5>
+              <p className="fs-5 fw-lighter text-muted ms-2 mb-0 text-truncate" style={{ maxWidth: "100%" }}>
+                {username || "No username set"}
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div className="card-footer d-flex justify-content-center align-items-center">
-      <button
-        className="btn btn-outline-secondary btn-sm me-3"
-        onClick={switchAccount}
-      >
-        Switch Account
-      </button>
-      <button
-        className="btn btn-outline-primary btn-sm"
-        onClick={handleModalOpen}
-      >
-        Set Details
-      </button>
+      <div className="card-footer d-flex justify-content-center align-items-center">
+        <button
+          className="btn btn-outline-secondary btn-sm me-3"
+          onClick={switchAccount}
+        >
+          Switch Account
+        </button>
+        <button
+          className="btn btn-outline-primary btn-sm"
+          onClick={handleModalOpen}
+        >
+          Set Details
+        </button>
+      </div>
     </div>
   </div>
 
@@ -285,6 +286,8 @@ const AccDetails = () => {
     </div>
   </div>
 </>
+
+
 
   );
 };
