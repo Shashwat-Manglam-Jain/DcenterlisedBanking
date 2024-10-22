@@ -173,7 +173,7 @@ function sendAmount(
     // Transfer amount
     payable(whowantmoney).transfer(amounts);
 
-    reqCount[msg.sender] -= 1;
+    reqCount[whowantmoney] -= 1;
 
     // Record the transaction
     allTransactions[msg.sender].push(AmountPay({
