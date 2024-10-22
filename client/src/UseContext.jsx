@@ -9,53 +9,54 @@ const UseContext = ({ children }) => {
   const [contract, setContract] = useState(null); 
   const [account, setAccount] = useState(null);
   const [isMetamaskInstalled, setIsMetamaskInstalled] = useState(true);
-  const [loading, setLoading] = useState(true); 
+ 
   const [transactions, setTransactions] = useState([]);
   const [sactions, setsactions] = useState([]);
 
   useEffect(() => {
     const connectTo = async () => {
-      setLoading(true); 
+      
       console.log("Attempting to connect to blockchain...");
 
       try {
         if (typeof window.ethereum === 'undefined') {
           alert("Metamask is not installed. Please install Metamask to connect to the blockchain.");
           setIsMetamaskInstalled(false);
-          setLoading(false);
+         
           return;
         }
 
         // Instantiate the provider
         const provider = new ethers.BrowserProvider(window.ethereum);
-        console.log("Provider initialized:", provider);
+        // console.log("Provider initialized:", provider);
 
         // Request account access
         await provider.send("eth_requestAccounts", []); 
-        console.log("MetaMask account access granted.");
+        // console.log("MetaMask account access granted.");
 
         // Get the signer and account address
         const signer = await provider.getSigner();
         const address = signer.address; // In ethers.js v6, address is a property, not a method
-        console.log("Connected address:", address);
+        // console.log("Connected address:", address);
         setAccount(address);
 
         // Get balance in Ether
         const balanceWei = await provider.getBalance(address);
         const balanceInEther = ethers.formatEther(balanceWei);
-        console.log("Balance (Ether):", balanceInEther);
+        // console.log("Balance (Ether):", balanceInEther);
         setBalance(balanceInEther);
         // 0xBC462dD61751dcbA2EB77bA3e16291d6F9950591
+        //0xA340A291b701821CAb4F2d5636E9fc1Be78Bd73D
         // Connect to the contract
-        const contractAddress = "0xA340A291b701821CAb4F2d5636E9fc1Be78Bd73D";
+        const contractAddress = "0xf52625721D5d3B0e7A8D2dbb202192D531BD1634";
         const contractInstance = new Contract(contractAddress, Bank.abi, signer);
-        console.log("Contract instance:", contractInstance);
+        // console.log("Contract instance:", contractInstance);
         setContract(contractInstance);
 
       } catch (error) {
         console.error("Error in connecting to blockchain: ", error);
       } finally {
-        setLoading(false); // Stop loading
+       
       }
     };
 
@@ -88,14 +89,8 @@ const UseContext = ({ children }) => {
     return <div>Please install Metamask to interact with this application.</div>;
   }
 
-  if (loading) {
-    return (
-      <div class="d-flex justify-content-center">
-        <div class="spinner-border text-primary" role="status"></div>
-       
-      </div>
-    );
-  }
+  
+  
 
   return (
     <MyContext.Provider 
